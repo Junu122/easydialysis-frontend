@@ -1,3 +1,14 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body{
+    font-family: "Oswald";
+}
+.active hr{
+
+ @apply block 
+}
+.active .linkeffect{
+    @apply text-[#323856]
+}
