@@ -38,9 +38,15 @@ import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
 import kidneylogo from './kidneylogo.png'
 import Companylogo from './companylogo.png'
+import Convenient from './convenient.jpg'
+import Location from './location.jpg'
+import Quality from './quality.jpg'
 
 
 export const assets = {
+    Quality,
+    Location,
+    Convenient,
     Companylogo,
     kidneylogo,
     appointment_img,
