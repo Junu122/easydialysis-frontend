@@ -12,6 +12,9 @@ export default {
      fontFamily: {
         poppins: ['Oswald', 'serif'], // Add Poppins font family
       },
+      backgroundImage:{
+        bgimage:"url('./src/assets/dialysisimg9.jpg')"
+      }
     },
   },
   plugins: [],
