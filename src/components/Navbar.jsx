@@ -21,7 +21,7 @@ const Navbar = () => {
 
     return (
 
-        <div className='z-10 bg-white relative w-full top-0 '>
+        <div className='z-10 bg-white sticky w-full top-0 '>
             <nav className='flex justify-between items-center py-4 px-6    shadow-md w-full '>
                 <section>
                     <Link to={'/'}>
