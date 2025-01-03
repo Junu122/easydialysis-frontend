@@ -11,7 +11,7 @@ const Servicecontainer = () => {
     useEffect(() => {
         if (inView) {
             maincontrols.start('visible')
-            slidecontrols.start('visible')
+            
         }
     }, [inView])
 
@@ -20,12 +20,12 @@ const Servicecontainer = () => {
         <div ref={ref} className='relative'>
             <motion.div
                 variants={{
-                    hidden: { opacity: 0, y: 75 },
-                    visible: { opacity: 1, y: 0 },
+                    hidden: { opacity: 0, x: 75 },
+                    visible: { opacity: 1, x: 0 },
                 }}
                 initial="hidden"
                 animate={maincontrols}
-                transition={{ duration: 0.9, delay: 0.5 }}
+                transition={{ duration: 2, delay: 0.3 }}
                 id="carousel"
                 className="flex flex-col md:flex-row  p-4 w-[90%] md:w-[90%] mx-auto gap-6 shadow-lg rounded-lg justify-between"
             >
@@ -51,7 +51,7 @@ const Servicecontainer = () => {
                   <p className='px-2 opacity-90 leading-8'>Our medical staff brings years of expertise in providing safe and comfortable dialysis treatments dedicated to delivering personalized care with empathy and precision.
                   With a proven track record of excellence, our staff is committed to maintaining the highest standards in patient care.</p>
                   <div className='border-2'>
-                   <img src={assets.Quality} alt="" className='h-[300px] w-full'/>
+                   <img src={assets.Quality} alt="" className='h-[300px] w-full '/>
                   </div>
                   
                 </div>

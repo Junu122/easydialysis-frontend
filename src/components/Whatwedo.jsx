@@ -2,11 +2,11 @@ import React from 'react'
 import { assets } from '../assets/assets'
 const Whatwedo = () => {
     return (
-        <div className='w-full m-auto mt-10  flex flex-col md:flex-row bg-red-300 justify-between shadow-md rounded-md'>
+        <div className='w-full m-auto mt-10  flex flex-col md:flex-row bg-white justify-between shadow-md rounded-md border-[1px]'>
             <div className='lg:max-w-[800px] md:max-w-[400px] px-4 flex flex-col justify-around'>
                 <div className=' '>
                     <p className='text-[20px] text-[#EF468D] uppercase'> what we do?</p>
-                    <h2 className='text-[32px] text-white leading-[50px] md:text-[40px]'>We provide a seamless and compassionate dialysis booking experience tailored to meet your needs.</h2>
+                    <h2 className='text-[32px] text-[#EF468D] leading-[50px] md:text-[40px]'>We provide a seamless and compassionate dialysis booking experience tailored to meet your needs.</h2>
                 </div>
                 <div className='md:grid md:grid-cols-2  mt-[5rem] gap-6 my-2 flex flex-col'>
                     <div className='text-center p-[20px]  border-[1px]  flex flex-col justify-center bg-[#e9d9d9] shadow-md'>
