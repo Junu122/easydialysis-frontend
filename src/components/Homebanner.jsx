@@ -1,7 +1,9 @@
 import { Section } from 'lucide-react'
 import {React,useEffect,useRef} from 'react'
 import {motion, useInView,useAnimation} from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 const Homebanner = () => {
+  const navigate=useNavigate()
   const ref=useRef(null)
   const inView=useInView(ref,{once:true})
   const maincontrols=useAnimation()
@@ -26,7 +28,7 @@ const Homebanner = () => {
       <p className="mt-4 text-white text-md md:text-base leading-5">
       Experience seamless dialysis care with our hassle-free booking system.
       </p>
-      <button 
+      <button onClick={()=> navigate('/dialysis')}
         className="mt-6 bg-transparent border-2 border-white text-white text-sm font-semibold px-6 py-2 rounded-lg hover:bg-white hover:text-primary transition-all">
         Book Now
       </button>

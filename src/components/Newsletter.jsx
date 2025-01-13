@@ -2,7 +2,7 @@ import React from 'react'
 
 const Newsletter = () => {
     return (
-        <div className='w-full bg-[#EF468D] mt-2 py-[80px] px-[24px] '>
+        <div className='w-full bg-primary  py-[80px] px-[24px] '>
             <div className='max-w-[1100px] mx-auto grid md:grid-cols-2 gap-[32px] grid-cols-1'>
                 <div className='text-white'>
                     <h1 className='text-[32px] font-[700]'>Join Our Community</h1>

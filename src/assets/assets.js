@@ -41,9 +41,11 @@ import Companylogo from './companylogo.png'
 import Convenient from './convenient.jpg'
 import Location from './location.jpg'
 import Quality from './quality.jpg'
+import Locationicon from './location.png'
 
 
 export const assets = {
+    Locationicon,
     Quality,
     Location,
     Convenient,

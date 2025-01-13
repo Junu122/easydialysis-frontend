@@ -3,12 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 body{
-    font-family: "Oswald";
+    font-family: "Outfit";
 }
-.active hr{
+.selected hr{
 
  @apply block 
 }
-.active .linkeffect{
-    @apply text-[#323856]
+.selected .linkeffect{
+    @apply text-primary
 }

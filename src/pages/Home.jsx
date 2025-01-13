@@ -4,12 +4,13 @@ import Servicecontainer from '../components/Servicecontainer'
 import Whatwedo from '../components/Whatwedo'
 import Newsletter from '../components/Newsletter'
 import Footer from '../components/Footer'
+import DialysisCareSection from '../components/Dialysiscaresection'
 const Home = () => {
   return (
     <div>
       <Homebanner />
-      <Servicecontainer />
       <Whatwedo />
+      <DialysisCareSection />
       <Newsletter />
       <Footer />
     </div>
