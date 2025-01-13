@@ -1,6 +1,41 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const Login = () => {
+  const [Data,setData]=useState({
+    email:"",
+    password:""
+  })
+  const [ErrorMessage,setErrorMessage]=useState("")
+
+  const onHandleChange=(e)=>{
+    const name=e.target.name
+    const value=e.target.value
+    setData(prev => ({ ...prev, [name]: value }))
+  }
+  console.log(Data,"data in login")
+
+
+  const ValidateData = (values) => {
+    const errors = {}
+    if (!values.email) {
+      errors.email = "email is required"
+    }
+    if (!values.password) {
+      errors.password = "password is required"
+    }
+    return errors
+  }
+
+  const HandleSubmit=(e)=>{
+    e.preventDefault()
+    console.log("submit")
+
+    const error=ValidateData(Data)
+  console.log(error,"error")
+    if(error.email || error.password){
+      setErrorMessage(error)
+    }
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
     <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
@@ -12,18 +47,21 @@ const Login = () => {
       </p>
 
       {/* Login Form */}
-      <form>
+      <form onSubmit={HandleSubmit}>
         {/* Email Input */}
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
             Email Address
           </label>
           <input
+            onChange={onHandleChange}
+            name='email'
             type="email"
             id="email"
             placeholder="Enter your email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none   ${ErrorMessage.email?"border-red-500 ring-red-500 ring-2" : "focus:ring-primary focus:ring-2"}` }
           />
+          <p className='text-red-500'>{ErrorMessage.email}</p>
         </div>
 
         {/* Password Input */}
@@ -32,17 +70,20 @@ const Login = () => {
             Password
           </label>
           <input
+          onChange={onHandleChange}
+            name='password'
             type="password"
             id="password"
             placeholder="Enter your password"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none   ${ErrorMessage.password?"border-red-500 ring-red-500 ring-2" : "focus:ring-primary focus:ring-2"}`}
           />
+           <p className='text-red-500'>{ErrorMessage.password}</p>
         </div>
 
         {/* Login Button */}
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md transition duration-300"
+          className="w-full py-2 px-4 bg-primary hover:bg-red-400 text-white font-medium rounded-md transition duration-300"
         >
           Log In
         </button>

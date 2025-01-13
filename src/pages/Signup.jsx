@@ -1,6 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const Signup = () => {
+  const [Data,setData]=useState({
+    username:"",
+    email:"",
+    password:""
+  })
+
+  const [ErrorMessage,setErrorMessage]=useState("")
+
+  const HandleChange=(e)=>{
+    const name=e.target.name;
+    const value=e.target.value;
+    setData(prev => ({ ...prev, [name]: value }))
+  }
+  console.log(Data,"data in signup")
+
+  const ValidateData=(values)=>{
+    const errors={};
+    if(!values.username){
+      errors.username="username is required"
+    }
+    if(!values.email){
+      errors.email="email is required"
+    }
+    if(!values.password){
+      errors.password="password is required"
+    }
+    return errors
+  }
+
+  const HandleSubmit=(e)=>{
+    e.preventDefault()
+    const error=ValidateData(Data)
+
+    if(error.username || error.password || error.email){
+         setErrorMessage(error)
+    }
+  }
   return (
     <div className=" flex items-center justify-center  ">
 
@@ -13,17 +50,20 @@ const Signup = () => {
       </p>
 
     
-      <form>
+      <form onSubmit={HandleSubmit}>
         <div className="mb-4">
           <label htmlFor="username" className="block text-gray-700 font-medium mb-2">
             Username
           </label>
           <input
+          onChange={HandleChange}
+          name='username'
             type="text"
             id="username"
             placeholder="Enter your username"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 ${ErrorMessage.username?"ring-2 ring-red-500" : ""}`}
           />
+          <p className='text-red-500'>{ErrorMessage.username}</p>
         </div>
 
  
@@ -32,11 +72,14 @@ const Signup = () => {
             Email Address
           </label>
           <input
+            onChange={HandleChange}
+            name="email"
             type="email"
             id="email"
             placeholder="Enter your email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 ${ErrorMessage.email?"ring-2 ring-red-500" : ""}`}
           />
+          <p className='text-red-500'>{ErrorMessage.email}</p>
         </div>
 
    
@@ -45,11 +88,14 @@ const Signup = () => {
             Password
           </label>
           <input
+           onChange={HandleChange}
+            name="password"
             type="password"
             id="password"
             placeholder="Create a password"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 ${ErrorMessage.password?"ring-2 ring-red-500" : ""}`}
           />
+          <p className='text-red-500'>{ErrorMessage.password}</p>
         </div>
         <button
           type="submit"
