@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import React from 'react'
 import { useParams } from "react-router-dom";
 const Appoinment = () => {
+   useEffect(() => {
+      window.scrollTo(0, 0);
+  }, []);
   const {centerid}=useParams()
   console.log(centerid,"params id")
   const centers = [

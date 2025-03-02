@@ -1,8 +1,11 @@
 import React from "react";
-import { useState } from "react";
-import Centercard from "../components/Centercard";
-import Footer from "../components/Footer";
+import { useState,useEffect } from "react";
+import Centercard from "../../components/User/Centercard";
+import Footer from "../../components/User/Footer";
 const Dialysiscenters = () => {
+   useEffect(() => {
+      window.scrollTo(0, 0);
+  }, []);
   const centers = [
     {
       id: 1,

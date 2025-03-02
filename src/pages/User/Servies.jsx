@@ -1,7 +1,8 @@
 import React from 'react'
-import { assets } from '../assets/assets'
-import Ourservices from '../components/Ourservices'
-import Footer from '../components/Footer'
+import { assets } from '../../assets/assets'
+import Ourservices from '../../components/User/Ourservices'
+import Footer from '../../components/User/Footer'
+import { useEffect } from 'react'
 
 const Servies = () => {
     const dialysisServices = [
@@ -36,6 +37,9 @@ const Servies = () => {
     image: "https://via.placeholder.com/300x200?text=Comprehensive+Support",
   },
 ];
+  useEffect(() => {
+      window.scrollTo(0, 0);
+  }, []);
 
     return (
         <div>

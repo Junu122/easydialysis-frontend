@@ -1,5 +1,5 @@
 import React from 'react'
-import { assets } from '../assets/assets'
+import { assets } from '../../assets/assets'
 const Whatwedo = () => {
     return (
         <div className="w-[90%] mx-auto mt-10 flex flex-col lg:flex-row bg-white shadow-lg rounded-lg border border-gray-200">

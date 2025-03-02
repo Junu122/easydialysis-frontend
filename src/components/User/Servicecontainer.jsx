@@ -1,5 +1,5 @@
 import { react, useEffect, useRef } from 'react'
-import { assets } from '../assets/assets'
+import { assets } from '../../assets/assets'
 import { useSpring, animated } from '@react-spring/web'
 
 import { motion, useInView, useAnimation } from 'framer-motion'

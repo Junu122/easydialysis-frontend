@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-
+import { authService } from '../../services/authService'
+import { useNavigate } from 'react-router-dom'
 const Signup = () => {
   const [Data,setData]=useState({
     username:"",
     email:"",
     password:""
   })
+
+  const navigate=useNavigate()
 
   const [ErrorMessage,setErrorMessage]=useState("")
 
@@ -30,12 +33,21 @@ const Signup = () => {
     return errors
   }
 
-  const HandleSubmit=(e)=>{
+  const HandleSubmit=async(e)=>{
     e.preventDefault()
     const error=ValidateData(Data)
 
     if(error.username || error.password || error.email){
          setErrorMessage(error)
+    }
+
+    const response=await authService.userRegister(Data)
+    if(response.data.success){
+      navigate("/login")
+    }else{
+      console.log(response,"fail response")
+      error.email=response.data.message;
+      setErrorMessage(error)
     }
   }
   return (

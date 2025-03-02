@@ -16,7 +16,10 @@ export default {
       },
       backgroundImage:{
         bgimage:"url('./src/assets/dialysisimg9.jpg')"
-      }
+      },
+      animation: {
+        spin: "spin 4s linear infinite",
+      },
     },
   },
   plugins: [],
