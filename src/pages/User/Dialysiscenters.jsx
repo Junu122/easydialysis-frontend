@@ -2,134 +2,38 @@ import React from "react";
 import { useState,useEffect } from "react";
 import Centercard from "../../components/User/Centercard";
 import Footer from "../../components/User/Footer";
+import { authService } from "../../services/authService";
 const Dialysiscenters = () => {
-   useEffect(() => {
-      window.scrollTo(0, 0);
-  }, []);
-  const centers = [
-    {
-      id: 1,
-      name: "EasyDialysis Mumbai",
-      location: "Mumbai",
-      image: "/dialysisimg1.jpg",
-    },
-    {
-      id: 2,
-      name: "EasyDialysis Delhi",
-      location: "Delhi",
-      image: "/dialysisimg2.jpg",
-    },
-    {
-      id: 3,
-      name: "EasyDialysis Hyderabad",
-      location: "Hyderabad",
-      image: "/dialysisimg3.jpeg",
-    },
-    {
-      id: 4,
-      name: "EasyDialysis Chennai",
-      location: "Chennai",
-      image: "/dialysisimg4.jpg",
-    },
-    {
-      id: 5,
-      name: "EasyDialysis Bangalore",
-      location: "Bangalore",
-      image: "/dialysisimg5.jpeg",
-    },
-    {
-      id: 6,
-      name: "life dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg6.jpg",
-    },
-    {
-      id: 7,
-      name: "angel  dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg7.jpg",
-    },
-    {
-      id: 8,
-      name: "appolo dialysis",
-      location: "Bangalore",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 9,
-      name: "CareLife Dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 10,
-      name: "Healing Dialysis Center",
-      location: "Delhi",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 11,
-      name: "EasyDialysis Delhi",
-      location: "Delhi",
-      image: "/dialysisimg2.jpg",
-    },
-    {
-      id: 12,
-      name: "EasyDialysis Hyderabad",
-      location: "Hyderabad",
-      image: "/dialysisimg3.jpeg",
-    },
-    {
-      id: 13,
-      name: "EasyDialysis Chennai",
-      location: "Chennai",
-      image: "/dialysisimg4.jpg",
-    },
-    {
-      id: 14,
-      name: "EasyDialysis Bangalore",
-      location: "Bangalore",
-      image: "/dialysisimg5.jpeg",
-    },
-    {
-      id: 15,
-      name: "life dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg6.jpg",
-    },
-    {
-      id: 16,
-      name: "angel  dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg7.jpg",
-    },
-    {
-      id: 17,
-      name: "appolo dialysis",
-      location: "Bangalore",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 18,
-      name: "CareLife Dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 19,
-      name: "Healing Dialysis Center",
-      location: "Delhi",
-      image: "/dialysisimg8.jpg",
-    },
-  ];
 
-  // State for search, filter, and displayed centers
+ 
+  const [newdialysis,setnewdialysis]=useState([])
+  const [filteredCenters, setFilteredCenters] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("All");
-  const [filteredCenters, setFilteredCenters] = useState(centers);
+  
+
+   useEffect(() => {
+    const fetchcenters=async()=>{
+      const response=await authService.dialysisCenters();
+      console.log('response in dialysis centers',response.data.data)
+      setnewdialysis(response?.data?.data)
+      setFilteredCenters(response?.data?.data)
+    }
+      
+    fetchcenters()
+      window.scrollTo(0, 0);
+  }, []);
+ 
+  console.log(newdialysis,"newdialysis")
+  console.log(filteredCenters,"filtered centers")
+
+  
+
+  // State for search, filter, and displayed centers
+ 
+  
 
   // Handle search
-
   const handlesearchclick = () => {
     console.log(searchQuery);
     filterCenters(searchQuery, selectedLocation);
@@ -142,11 +46,11 @@ const Dialysiscenters = () => {
   };
 
   // Filter centers based on search and location
-  const filterCenters = (search, location) => {
-    const filtered = centers.filter(
+  const filterCenters =async (search, location) => {
+    const filtered =await newdialysis.filter(
       (center) =>
         center.name.toLowerCase().includes(search.toLowerCase()) &&
-        (location === "All" || center.location === location)
+        (location === "All" || center.city === location)
     );
     setFilteredCenters(filtered);
   };
@@ -188,23 +92,23 @@ const Dialysiscenters = () => {
           className="w-full md:w-1/3 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#d02b6e]"
         >
           <option value="All">All Locations</option>
-          <option value="Mumbai">Mumbai</option>
-          <option value="Delhi">Delhi</option>
-          <option value="Hyderabad">Hyderabad</option>
-          <option value="Chennai">Chennai</option>
-          <option value="Bangalore">Bangalore</option>
+          <option value="MUMBAI">Mumbai</option>
+          <option value="KANNUR">KANNUR</option>
+          <option value="BANGALORE">BANGALORE</option>
+          <option value="CHENNAI">Chennai</option>
+         
         </select>
       </div>
 
       {/* Centers List */}
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCenters.map((center) => (
-         <Centercard key={center.id} center={center}/>
+        {filteredCenters?.map((center) => (
+         <Centercard key={center._id} center={center}/>
         ))}
       </div>
 
       {/* No Results */}
-      {filteredCenters.length === 0 && (
+      {filteredCenters?.length === 0 && (
         <div className="text-center mt-12">
           <p className="text-gray-500 text-lg">
             No centers found. Try searching or changing the filter.

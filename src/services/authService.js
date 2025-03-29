@@ -1,9 +1,9 @@
-import axiosInstance from "../utils/axios";
+import {useraxiosInstance} from '../utils/axios'
 
 export const authService = {
   async userRegister(userData) {
     try {
-      const response = await axiosInstance.post('/register', userData);
+      const response = await useraxiosInstance.post('/register', userData);
       return response;
     } catch (error) {
       console.error("Registration error:", error);
@@ -14,7 +14,7 @@ export const authService = {
   async userLogin(userData) {
     
     try {
-      const response = await axiosInstance.post('/login', userData, { withCredentials: true });
+      const response = await useraxiosInstance.post('/login', userData, { withCredentials: true });
       return response;
     } catch (error) {
       console.error("Login error:", error);
@@ -24,7 +24,7 @@ export const authService = {
 
   async refreshaccesstoken() {
     try {
-      const response = await axiosInstance.get("/refreshaccesstoken", { withCredentials: true });
+      const response = await useraxiosInstance.get("/refreshaccesstoken", { withCredentials: true });
       return response;
     } catch (error) {
       console.error("Token refresh error:", error);
@@ -36,7 +36,7 @@ export const authService = {
     
     try {
       console.log("entered userdata")
-      const response = await axiosInstance.get('/userdata', { withCredentials: true });
+      const response = await useraxiosInstance.get('/userdata', { withCredentials: true });
       console.log("response in userdata : ",response)
       if(response.data.success){
         console.log(response.data)
@@ -51,11 +51,36 @@ export const authService = {
 
   async logout() {
     try {
-      const response = await axiosInstance.post('/logout');
+      const response = await useraxiosInstance.post('/logout');
       return response;
     } catch (error) {
       console.error("Logout error:", error);
       throw error;
     }
   },
+
+  async dialysisCenters(){
+    try {
+      const response=await useraxiosInstance.get('/dialysis-centers');
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async makePayment(bookingData){
+    try {
+      const response=await useraxiosInstance.post('/make-payment',bookingData,{withCredentials:true});
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async getPaymentDetails(sessionId){
+    try {
+      const response=await useraxiosInstance.get(`/booking-details?session_id=${sessionId}`);
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  }
 };

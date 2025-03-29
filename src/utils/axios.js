@@ -15,7 +15,7 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-const axiosInstance = axios.create({
+const useraxiosInstance = axios.create({
   baseURL: 'http://localhost:4000/api/auth',
   timeout: 5000,
   headers: {
@@ -23,28 +23,8 @@ const axiosInstance = axios.create({
   },
   withCredentials: true
 });
-// axiosInstance.interceptors.request.use(
-//   (config) => {
-//     console.log("Request Interceptor:", config);
-    
-//     // You can modify request headers here (e.g., attach tokens)
-//     const accessToken = document.cookie
-//       .split("; ")
-//       .find((row) => row.startsWith("accessToken="))
-//       ?.split("=")[1];
 
-//     if (accessToken) {
-//       config.headers.Authorization = `Bearer ${accessToken}`;
-//     }
-
-//     return config;
-//   },
-//   (error) => {
-//     console.log("Request Interceptor Error:", error);
-//     return Promise.reject(error);
-//   }
-// );
-axios.interceptors.request.use(function (config) {
+useraxiosInstance.interceptors.request.use(function (config) {
   console.log("config : ",config)
     // Do something before request is sent
     return config;
@@ -52,7 +32,7 @@ axios.interceptors.request.use(function (config) {
     // Do something with request error
     return Promise.reject(error);
   });
-axiosInstance.interceptors.response.use(
+  useraxiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -65,7 +45,7 @@ axiosInstance.interceptors.response.use(
       return new Promise((resolve, reject) => {
         failedQueue.push({ resolve, reject });
       })
-        .then(() => axiosInstance(originalRequest))
+        .then(() => useraxiosInstance(originalRequest))
         .catch((err) => Promise.reject(err));
     }
 
@@ -74,11 +54,11 @@ axiosInstance.interceptors.response.use(
 
     try {
    
-      const response = await axiosInstance.get('/refreshaccesstoken');
+      const response = await useraxiosInstance.get('/refreshaccesstoken');
       
       if (response.data.success) {
         processQueue(null);
-        return axiosInstance(originalRequest);
+        return useraxiosInstance(originalRequest);
       }
     } catch (refreshError) {
       processQueue(refreshError, null);
@@ -93,4 +73,34 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+const adminaxiosInstance = axios.create({
+  baseURL: 'http://localhost:4000/api/admin', 
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true
+});
+
+adminaxiosInstance.interceptors.request.use(
+  (config) => {
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+adminaxiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      return Promise.reject(error);
+   
+    }
+    return error
+  }
+);
+
+export  {useraxiosInstance,adminaxiosInstance};

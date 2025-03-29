@@ -1,133 +1,35 @@
 import { useState,useEffect } from "react";
 import React from 'react'
 import { useParams } from "react-router-dom";
+import { authService } from "../../services/authService";
+import PaymentForm from "../../components/User/PaymentForm";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+const stripePromise = loadStripe("pk_test_51R5jFaRvfHeznjdnx2b2DkxEAsax1MkLgUCM1QSZm65tTzBgzXEGX0J4i7X5frN9ICdgOWnAaejEEvtw72UsM33b009h2mEwJz");
 const Appoinment = () => {
+   const coludinarybase_url='http://res.cloudinary.com/dpg0noki6/image/upload/v1741513415/'
+  const {centerid}=useParams()
+  const [dialysiscenter,setdialysiscenter]=useState([])
+  const [showPayment,setshowPayment]=useState(false)
    useEffect(() => {
+     const fetchcenter=async()=>{
+       const response=await authService.dialysisCenters();
+       console.log(response)
+       setdialysiscenter(response?.data?.data)
+
+     }
+     fetchcenter()
       window.scrollTo(0, 0);
   }, []);
-  const {centerid}=useParams()
+
   console.log(centerid,"params id")
-  const centers = [
-    {
-      id: 1,
-      name: "EasyDialysis Mumbai",
-      location: "Mumbai",
-      image: "/dialysisimg1.jpg",
-    },
-    {
-      id: 2,
-      name: "EasyDialysis Delhi",
-      location: "Delhi",
-      image: "/dialysisimg2.jpg",
-    },
-    {
-      id: 3,
-      name: "EasyDialysis Hyderabad",
-      location: "Hyderabad",
-      image: "/dialysisimg3.jpeg",
-    },
-    {
-      id: 4,
-      name: "EasyDialysis Chennai",
-      location: "Chennai",
-      image: "/dialysisimg4.jpg",
-    },
-    {
-      id: 5,
-      name: "EasyDialysis Bangalore",
-      location: "Bangalore",
-      image: "/dialysisimg5.jpeg",
-    },
-    {
-      id: 6,
-      name: "life dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg6.jpg",
-    },
-    {
-      id: 7,
-      name: "angel  dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg7.jpg",
-    },
-    {
-      id: 8,
-      name: "appolo dialysis",
-      location: "Bangalore",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 9,
-      name: "CareLife Dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 10,
-      name: "Healing Dialysis Center",
-      location: "Delhi",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 11,
-      name: "EasyDialysis Delhi",
-      location: "Delhi",
-      image: "/dialysisimg2.jpg",
-    },
-    {
-      id: 12,
-      name: "EasyDialysis Hyderabad",
-      location: "Hyderabad",
-      image: "/dialysisimg3.jpeg",
-    },
-    {
-      id: 13,
-      name: "EasyDialysis Chennai",
-      location: "Chennai",
-      image: "/dialysisimg4.jpg",
-    },
-    {
-      id: 14,
-      name: "EasyDialysis Bangalore",
-      location: "Bangalore",
-      image: "/dialysisimg5.jpeg",
-    },
-    {
-      id: 15,
-      name: "life dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg6.jpg",
-    },
-    {
-      id: 16,
-      name: "angel  dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg7.jpg",
-    },
-    {
-      id: 17,
-      name: "appolo dialysis",
-      location: "Bangalore",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 18,
-      name: "CareLife Dialysis",
-      location: "Mumbai",
-      image: "/dialysisimg8.jpg",
-    },
-    {
-      id: 19,
-      name: "Healing Dialysis Center",
-      location: "Delhi",
-      image: "/dialysisimg8.jpg",
-    },
-  ];
-  const clickedcenter=centers.find((center)=>center.id==parseInt(centerid,10))
-  console.log(clickedcenter,"clicked center")
+  
+  const clickedcenter=dialysiscenter?.find((center)=>center._id==centerid)
+
+ 
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
-
+  
  
   const generateDates = () => {
     const dates = [];
@@ -163,16 +65,37 @@ const Appoinment = () => {
     }
     return allTimeSlots;
   };
-
-  const handleBooking = () => {
+  console.log("date format",new Date(selectedDate))
+  const handleBooking =async (e) => {
+    e.preventDefault()
     if (!selectedDate || !selectedTime) {
       alert('Please select both a date and time slot.');
       return;
     }
+    const stripe=await loadStripe('pk_test_51R5jFaRvfHeznjdnx2b2DkxEAsax1MkLgUCM1QSZm65tTzBgzXEGX0J4i7X5frN9ICdgOWnAaejEEvtw72UsM33b009h2mEwJz')
+    const bookingData={
+      date:selectedDate,
+      time:selectedTime,
+      centerId:clickedcenter._id,
+      centerName:clickedcenter.name,
+      price:100
+      
+    }
+    console.log("bookingData   :", bookingData)
+    const response=await authService.makePayment(bookingData)
+    console.log("response in appoinment  :" , response)
+    const session=await response.data.session;
    
-  
+    const result=stripe.redirectToCheckout({
+      sessionId:session.id
+    })
+    console.log(" result from payment :", result)
+
+    if(result.error){
+      console.log(result.error)
+    }
+    console.log("booking data  :",bookingData)
    
-    alert(`Booking confirmed for ${clickedcenter.name} on ${selectedDate} at ${selectedTime}`);
   };
 
   const centerDetails={
@@ -196,7 +119,7 @@ const Appoinment = () => {
     <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg overflow-hidden">
       {/* Image */}
       <img
-        src={clickedcenter.image}
+        src={coludinarybase_url+clickedcenter?.photo}
         alt={"appolo"}
         className="w-full h-64 object-cover"
       />
@@ -204,9 +127,10 @@ const Appoinment = () => {
       {/* Content */}
       <div className="p-6">
         {/* Center Details */}
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">{clickedcenter.name}</h1>
-        <p className="text-gray-600 mb-2">{clickedcenter.location}</p>
-        <p className="text-gray-600 mb-4">Contact: {3522245585}</p>
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">{clickedcenter?.name}</h1>
+        <p className="text-gray-600 mb-2">{clickedcenter?.places}</p>
+        <p className="text-gray-600 mb-2">{clickedcenter?.city}</p>
+        <p className="text-gray-600 mb-4">Contact: {clickedcenter?.phone}</p>
 
         {/* Specialities */}
         <h2 className="text-xl font-semibold text-gray-800 mb-2">Specialties:</h2>
@@ -215,7 +139,9 @@ const Appoinment = () => {
             <li key={index}>{specialty}</li>
           ))}
         </ul>
+       <form  onSubmit={handleBooking}>
 
+      
         {/* Date and Time Selection */}
         <div className="space-y-4">
           {/* Date Selection */}
@@ -253,13 +179,21 @@ const Appoinment = () => {
           </div>
         </div>
 
+
+
         {/* Booking Button */}
-        <button
+        <button type="submit"
           className="w-full mt-6 bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
-          onClick={handleBooking}
+          
         >
           Confirm Booking
         </button>
+        </form>
+        {/* {showPayment && (
+                        <Elements stripe={stripePromise}>
+                            <PaymentForm amount={500} onPaymentSuccess={() => setshowPayment(false)} />
+                        </Elements>
+                    )} */}
       </div>
     </div>
   </div>

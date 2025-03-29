@@ -27,7 +27,7 @@ const PrivateRoute = ({ children }) => {
     return <div class="flex items-center justify-center h-screen bg-gray-100">
     <div class="flex flex-col items-center">
         
-        <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">easy dialysis</div>
+        <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         
        
         <p class="mt-4 text-gray-700">Loading...</p>

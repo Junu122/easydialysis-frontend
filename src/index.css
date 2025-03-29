@@ -9,6 +9,9 @@ body{
 
  @apply block 
 }
+.selected .bgcolor {
+    @apply border-[4px] border-[#3974c7]
+}
 .selected .linkeffect{
     @apply text-primary
 }

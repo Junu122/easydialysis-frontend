@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { userLogin } from "../../features/auth/authSlice";
+import { adminService } from "../../services/adminService";
+import { addAdminDetails } from "../../features/auth/adminAuth";
+import { ClipLoader } from "react-spinners"; 
 
-const Login = () => {
- const dispatch=useDispatch()
-  const navigate = useNavigate();
+const AdminLogin = () => {
+  const navigate=useNavigate()
+  const dispatch = useDispatch()
   const [Data, setData] = useState({
     email: "",
     password: "",
   });
-  const [ErrorMessage, setErrorMessage] = useState("");
-  console.log(ErrorMessage,"errormessage")
+  const [loading,setLoading]=useState(false)
+console.log(Data)
 
   const onHandleChange = (e) => {
     const name = e.target.name;
@@ -20,46 +22,47 @@ const Login = () => {
   };
 
   // vadidate data on frontend
-  const ValidateData = (values) => {
-    const errors = {};
-    if (!values.email) {
-      errors.email = "email is required";
-    }
-    if (!values.password) {
-      errors.password = "password is required";
-    }
-    return errors;
-  };
+//   const ValidateData = (values) => {
+//     const errors = {};
+//     if (!values.email) {
+//       errors.email = "email is required";
+//     }
+//     if (!values.password) {
+//       errors.password = "password is required";
+//     }
+//     return errors;
+//   };
 
   // handling while submit
   const HandleSubmit = async (e) => {
     e.preventDefault();
-    const error = ValidateData(Data);
-
-    if (error.email || error.password ) {
-      setErrorMessage(error);
-      return
+    setLoading(true)
+    console.log("admin clicked")
+    try {
+      const response = await adminService.adminLogin(Data);
+      console.log(response,"response in login")
+      if(response.data.success===false){
+        alert(response.statusText)
+      }
+      if(response?.data?.success){
+           dispatch(addAdminDetails({ "token": response.data.token }))
+           setLoading(false)
+         navigate('/admin')
+      }
+    } catch (error) {
+      console.log(error,"error in admin login")
+     
+    }finally{
+      setTimeout(()=>{
+        setLoading(false)
+      },10000)
     }
-
-    const response = await dispatch(userLogin(Data));
-    console.log(response,"response in login")
-    if(response?.error?.message==='Network Error'){
-      error.networkerror="internal server error"
-      setErrorMessage(error);
-    }
-    if (response?.payload?.passerror || response?.payload?.usererror ) {
-      error.email = response.payload.usererror;
-      error.password = response?.payload?.passerror;
-      
-      setErrorMessage(error);
-    }
-    if (response?.payload?.success) {
-      navigate("/");
-    }
+   
+  
   };
   return (
-    <div className="flex items-center justify-center mt-6">
-      <div className="bg-white rounded-lg sm:border-t-0 md:border-2 shadow-lg w-full max-w-md p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Welcome Back!
         </h2>
@@ -79,17 +82,17 @@ const Login = () => {
             </label>
             <input
               onChange={onHandleChange}
-              name="email"
-              type="email"
+              name="userName"
+              type="text"
               id="email"
               placeholder="Enter your email"
               className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none   ${
-                ErrorMessage.email
-                  ? "border-red-500 ring-red-500 ring-2"
-                  : "focus:ring-primary focus:ring-2"
+                // ErrorMessage.email
+                  
+                  "focus:ring-primary focus:ring-2"
               }`}
             />
-            <p className="text-red-500">{ErrorMessage.email}</p>
+            {/* <p className="text-red-500">{ErrorMessage.email}</p> */}
           </div>
 
           {/* Password Input */}
@@ -106,23 +109,28 @@ const Login = () => {
               type="password"
               id="password"
               placeholder="Enter your password"
-              className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none   ${
-                ErrorMessage.password
-                  ? "border-red-500 ring-red-500 ring-2"
-                  : "focus:ring-primary focus:ring-2"
-              }`}
+              className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none'  
+                // ErrorMessage.password
+              
+             
+              
             />
-            <p className="text-red-500">{ErrorMessage.password}</p>
+          
           </div>
 
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-primary hover:bg-red-400 text-white font-medium rounded-md transition duration-300"
+            disabled={loading} // Disable button during loading
+            className="w-full py-2 px-4 bg-primary hover:bg-red-400 text-white font-medium rounded-md transition duration-300 flex items-center justify-center"
           >
-            Log In
+            {loading ? (
+              <ClipLoader color="#ffffff" size={20} /> // Show spinner during loading
+            ) : (
+              "Log In"
+            )}
           </button>
-          <p className="text-red-500">{ErrorMessage.networkerror}</p>
+       
         </form>
 
         {/* Forgot Password and Sign Up */}
@@ -145,4 +153,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;
