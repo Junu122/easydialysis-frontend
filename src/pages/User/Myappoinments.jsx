@@ -1,99 +1,148 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useEffect } from 'react';
+import { Calendar, Clock, Check, X, AlertCircle, Trash2,MapPin ,Wallet  } from 'lucide-react';
+import { authService } from '../../services/authService';
 
 const Myappoinments = () => {
-  const [appointments, setAppointments] = useState([]);
+ 
 
-  // Mock data for demonstration; replace with API data
-  useEffect(() => {
-    const mockAppointments = [
-      {
-        id: 1,
-        date: "2025-01-15",
-        status: "Confirmed",
-        services: ["Hemodialysis", "Post-dialysis care"],
-        center: "Healthy Life Dialysis Center",
-      },
-      {
-        id: 2,
-        date: "2025-01-18",
-        status: "Pending",
-        services: ["Hemodialysis"],
-        center: "City Dialysis Hub",
-      },
-    ];
-    setAppointments(mockAppointments);
-  }, []);
+  const [BookingData,setBookingData]=useState()
 
-  // Cancel booking handler
-  const cancelBooking = (id) => {
-    // Replace with API call to cancel the booking
-    setAppointments(
-      appointments.filter((appointment) => appointment.id !== id)
-    );
-    alert("Booking canceled!");
+  useEffect(()=>{
+   const getmybookings=async()=>{ 
+    const response=await authService.getBookingDetails();
+    console.log(response)
+    setBookingData(response?.data?.myBookingData)
+  }
+  getmybookings()
+
+  },[setBookingData])
+  console.log("BookingData of user :",BookingData)
+
+  const getStatusBadge = (status) => {
+    switch(status) {
+      case 'confirmed':
+        return <span className="flex items-center text-green-600 bg-green-100 px-2 py-1 rounded-full text-sm"><Check className="w-4 h-4 mr-1" /> Confirmed</span>;
+      case 'pending':
+        return <span className="flex items-center text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full text-sm"><AlertCircle className="w-4 h-4 mr-1" /> Pending</span>;
+      case 'completed':
+        return <span className="flex items-center text-blue-600 bg-blue-100 px-2 py-1 rounded-full text-sm"><Check className="w-4 h-4 mr-1" /> Completed</span>;
+      case 'cancelled':
+        return <span className="flex items-center text-red-600 bg-red-100 px-2 py-1 rounded-full text-sm"><X className="w-4 h-4 mr-1" /> Cancelled</span>;
+      default:
+        return null;
+    }
   };
-  return (
-    <div className="min-h-screen bg-gray-100 ">
-      <section className="bg-[#d02b6e] text-white py-12 text-center mb-4">
-        <h1 className="text-4xl md:text-5xl font-bold">My Appoinments</h1>
-        <p className="text-lg md:text-xl mt-4">
-          Here you can manage your appoinments booked
-        </p>
-      </section>
 
-      {appointments.length > 0 ? (
-        <div className="space-y-4 px-6">
-          {appointments.map((appointment) => (
-            <div
-              key={appointment.id}
-              className="bg-white shadow-md p-4 rounded-lg border border-gray-200"
-            >
-              <div className="mb-2">
-                <span className="font-bold text-gray-700">
-                  Date of Booking:
-                </span>{" "}
-                <span className="text-gray-600">{appointment.date}</span>
-              </div>
-              <div className="mb-2">
-                <span className="font-bold text-gray-700">Status:</span>{" "}
-                <span
-                  className={`${
-                    appointment.status === "Confirmed"
-                      ? "text-green-600"
-                      : "text-yellow-600"
-                  } font-medium`}
-                >
-                  {appointment.status}
-                </span>
-              </div>
-              <div className="mb-2">
-                <span className="font-bold text-gray-700">Services:</span>{" "}
-                <ul className="list-disc list-inside text-gray-600">
-                  {appointment.services.map((service, index) => (
-                    <li key={index}>{service}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mb-4">
-                <span className="font-bold text-gray-700">
-                  Dialysis Center:
-                </span>{" "}
-                <span className="text-gray-600">{appointment.center}</span>
-              </div>
-              <button
-                onClick={() => cancelBooking(appointment.id)}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
-              >
-                Cancel Booking
-              </button>
-            </div>
-          ))}
+  const cancelAppointment =async (id) => {
+    const canceldata={
+      appoinmentId:id
+    }
+    const response=await authService.cancelBooking(canceldata)
+    console.log(response,"response from canceldata")
+    setBookingData(BookingData.map(app => 
+      app._id === id ? {...app, bookingStatus
+        : 'cancelled'} : app
+    ));
+    
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4">
+      
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">My Appointments</h1>
+          <p className="text-gray-600 mt-2">Manage your upcoming appointments</p>
         </div>
-      ) : (
-        <p className="text-gray-600 text-center mt-10">
-          No appointments booked.
-        </p>
-      )}
+
+   
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white rounded-lg shadow p-4 flex items-center">
+            <div className="bg-blue-100 p-3 rounded-full mr-4">
+              <Calendar className="w-6 h-6 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Upcoming</p>
+              <p className="text-xl font-semibold">{BookingData?.filter(a => a.bookingStatus === 'confirmed').length}</p>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow p-4 flex items-center">
+            <div className="bg-yellow-100 p-3 rounded-full mr-4">
+              <Clock className="w-6 h-6 text-yellow-600" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Pending</p>
+              <p className="text-xl font-semibold">{BookingData?.filter(a => a.bookingStatus === 'pending').length}</p>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow p-4 flex items-center">
+            <div className="bg-green-100 p-3 rounded-full mr-4">
+              <Check className="w-6 h-6 text-green-600" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Completed</p>
+              <p className="text-xl font-semibold">{BookingData?.filter(a => a.bookingStatus === 'completed').length}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Appointments List */}
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-medium text-gray-900">Your Appointments</h2>
+          </div>
+          {
+            !BookingData?<div>no appoinments found</div>:(
+              <div className="divide-y divide-gray-200">
+            {BookingData?.map(appointment => (
+              <div key={appointment?._id} className="p-6 hover:bg-gray-50 transition-colors duration-150">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+                  <div className="mb-4 md:mb-0">
+                    <h3 className="text-lg font-medium text-gray-900">{appointment?.dialysisCenterId?.CenterName}</h3>
+                    <div className="mt-1 text-gray-600">
+                      <p className="flex items-center">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        {appointment?.appoinmentDate} at {appointment?.appoinmentTime}
+                      </p>
+                      <p className="flex items-center mt-1">
+                      <MapPin  className="w-4 h-4 mr-2"/>
+                      {appointment?.dialysisCenterId?.CenterAddress +  "," + appointment?.dialysisCenterId?.CenterCity}</p>
+                      <p className=" flex items-center mt-1 text-green-500">
+                      <Wallet className='w-4 h-4 mr-2'/>
+                      {appointment.paymentStatus}
+                      </p>
+                    </div>
+                    {/* {appointment.notes && (
+                      <p className="mt-2 text-sm text-gray-500 italic">{appointment.notes}</p>
+                    )} */}
+                  </div>
+                  
+                  <div className="flex flex-col items-start md:items-end">
+                    <div className="mb-3">
+                      {getStatusBadge(appointment?.bookingStatus )}
+                    </div>
+                    
+                    {(appointment?.bookingStatus === 'confirmed' || appointment?.bookingStatus === 'pending') && (
+                      <button 
+                        onClick={() => cancelAppointment(appointment?._id)}
+                        className="flex items-center text-red-600 hover:text-red-800 transition-colors duration-150"
+                      >
+                        <Trash2 className="w-4 h-4 mr-1" />
+                        Cancel Appointment
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+            )
+          }
+        
+        </div>
+      </div>
     </div>
   );
 };

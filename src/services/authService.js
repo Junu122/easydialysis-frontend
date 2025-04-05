@@ -82,5 +82,21 @@ export const authService = {
     } catch (error) {
       console.log(error)
     }
+  },
+  async getBookingDetails(){
+    try {
+      const response=await useraxiosInstance.get('/my-bookings',{withCredentials:true})
+      return response
+    } catch (error) {
+      console.log(response)
+    }
+  },
+  async cancelBooking(updateData){
+    try {
+      const response=await useraxiosInstance.put('/cancel-booking',updateData,{withCredentials:true});
+      return response
+    } catch (error) {
+      console.log(error)
+    }
   }
 };

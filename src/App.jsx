@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import UserRouter from "./Routes/UserRouter";
-import AdminRouter from "./Routes/AdminRouter";
+import AdminRoutes from './Routes/AdminRoutes'
 const App = () => {
  
 
@@ -12,7 +12,7 @@ const App = () => {
     <>
     <Routes>
     <Route path="/*" element={<UserRouter />} />
-    <Route path="/admin/*" element={<AdminRouter />}/>
+    <Route path="/admin/*" element={<AdminRoutes />}/>
     </Routes>
 
       </>

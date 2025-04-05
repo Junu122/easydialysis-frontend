@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react'
 import Footer from '../../components/User/Footer'
-
+import {MessageSquareWarning} from "lucide-react"
 const About = () => {
       useEffect(() => {
           window.scrollTo(0, 0);
@@ -8,14 +8,22 @@ const About = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
             {/* Hero Section */}
-            <section className="bg-[#d02b6e] text-white py-12">
-                <div className="max-w-6xl mx-auto px-4 text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">Welcome to EasyDialysis</h1>
-                    <p className="text-lg md:text-xl">
-                        Simplifying dialysis care with innovative solutions and compassionate service.
-                    </p>
-                </div>
-            </section>
+            <section className="relative h-64 overflow-hidden">
+      <div 
+        className="absolute inset-0 bg-cover bg-center" 
+        style={{ 
+          backgroundImage: `url(${ "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKhwraL1lDK7pBifJRw9FWrSuNNdGI0WSqug&s"})`
+        }}
+      ></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-pink-600/80"></div>
+      <div className="relative h-full flex flex-col justify-center items-center text-white px-4 text-center z-10">
+      <MessageSquareWarning />
+        <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-tight">About Us</h1>
+        <p className="text-lg md:text-xl max-w-2xl mx-auto font-light">
+          Book from top centers
+        </p>
+      </div>
+    </section>
 
             {/* About Section */}
             <section className="py-12">
@@ -23,6 +31,7 @@ const About = () => {
                     <div className="flex flex-col md:flex-row items-center gap-6">
                         {/* Image */}
                         <div className="w-full md:w-1/2">
+                       
                             <img
                                 src="https://websitedemos.net/general-hospital-04/wp-content/uploads/sites/1482/2023/07/about-bg.jpg"
                                 alt="About EasyDialysis"

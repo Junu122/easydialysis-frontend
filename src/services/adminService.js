@@ -29,13 +29,61 @@ export const adminService={
           
         }
     },
-    async updateCenter(data,clickedcenter){
+    async updateCenter(data,centerid){
         try {
-            const response=await adminaxiosInstance.put(`/update-center/${clickedcenter._id}`,data,{withCredentials:true});
+            const response=await adminaxiosInstance.put(`/update-center/${centerid}`,data,{withCredentials:true});
             console.log(response)
             return response
         } catch (error) {
+            return error.response
+        }
+    },
+    async getAppoinments(){
+        try {
+            const response=await adminaxiosInstance.get('/get-appoinments',{withCredentials:true})
+            return response
+        } catch (error) {
             console.log(error)
+        }
+    },
+    async deleteCenter(centerid){
+        try {
+            const response=await adminaxiosInstance.delete(`/delete-center/${centerid}`);
+            return response
+        } catch (error) {
+            return error.response
+        }
+    },
+    async updateAppoinment(data,appoinmentid){
+        try {
+            const response=await adminaxiosInstance.put(`/update-appoinment/${appoinmentid}`,data,{withCredentials:true})
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async usersData(){
+        try {
+            const response=await adminaxiosInstance.get('/users',{withCredentials:true});
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async updateUser(data,userid){
+        try {
+            const response=await adminaxiosInstance.put(`/update-user/${userid}`,data,{withCredentials:true})
+            return response
+        } catch (error) {
+            console.log(response)
+        }
+    },
+    async allDialysisCenters(){
+        try {
+            const response=await adminaxiosInstance.get('/dialysis-centers',{withCredentials:true})
+            return response
+        } catch (error) {
+            console.log(response)
         }
     }
 }
