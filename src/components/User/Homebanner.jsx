@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
 import { ChevronRight, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import { assets } from '../../assets/assets';
 const HomeBanner = () => {
   const navigate = useNavigate();
   const ref = useRef(null);
@@ -38,7 +38,7 @@ const HomeBanner = () => {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background with overlay */}
-      <div className="absolute inset-0 bg-[url('D:\desktop\EASYDIALYSIS\frontend\src\assets\dialysisimg9.jpg')] bg-cover bg-center bg-no-repeat">
+      <div style={{backgroundImage:`url(${assets.dialysisimg9})`}} className="absolute inset-0  bg-cover bg-center bg-no-repeat">
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30"></div>
       </div>
       

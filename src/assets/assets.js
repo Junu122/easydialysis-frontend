@@ -42,9 +42,11 @@ import Convenient from './convenient.jpg'
 import Location from './location.jpg'
 import Quality from './quality.jpg'
 import Locationicon from './location.png'
+import dialysisimg9 from "./dialysisimg9.jpg"
 
 
 export const assets = {
+    dialysisimg9,
     Locationicon,
     Quality,
     Location,
