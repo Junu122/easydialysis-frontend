@@ -16,8 +16,8 @@ const processQueue = (error, token = null) => {
 };
 
 const useraxiosInstance = axios.create({
-  baseURL: 'http://localhost:4000/api/auth',
-  timeout: 5000,
+  baseURL: 'https://easydialysis-backend.vercel.app/api/auth',
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -76,7 +76,7 @@ useraxiosInstance.interceptors.request.use(function (config) {
 );
 
 const adminaxiosInstance = axios.create({
-  baseURL: 'http://localhost:4000/api/admin', 
+  baseURL: 'https://easydialysis-backend.vercel.app/api/admin', 
   headers: {
     'Content-Type': 'application/json',
   },
