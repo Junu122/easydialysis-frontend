@@ -38,7 +38,7 @@ const HomeBanner = () => {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background with overlay */}
-      <div className="absolute inset-0 bg-bgimage bg-cover bg-center bg-no-repeat">
+      <div className="absolute inset-0 bg-[url('D:\desktop\EASYDIALYSIS\frontend\src\assets\dialysisimg9.jpg')] bg-cover bg-center bg-no-repeat">
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30"></div>
       </div>
       

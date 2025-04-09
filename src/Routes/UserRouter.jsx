@@ -84,9 +84,9 @@ const UserRouter = () => {
           }
         />
         <Route path="/signup" element={
-           <PublicRoute>
+          
               <Signup />
-            </PublicRoute>
+            
         } />
         <Route
           path="/success"
