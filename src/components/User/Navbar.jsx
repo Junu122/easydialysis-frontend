@@ -98,6 +98,8 @@ const Navbar = () => {
             {!isAuthenticated ? (
               <LoginButton navigate={navigate} />
             ) : (
+
+              
               <UserMenu 
                 user={user} 
                 dropdown={dropdown} 
@@ -106,6 +108,7 @@ const Navbar = () => {
                 handleLogout={handleLogout}
                 dropdownVariants={dropdownVariants}
               />
+              
             )}
           </div>
 
@@ -283,8 +286,17 @@ const UserMenu = ({ user, dropdown, toggleDropdown, navigate, handleLogout, drop
         whileTap={{ scale: 0.95 }}
         onClick={toggleDropdown}
         aria-label="User menu"
-      >
-        {user?.username.charAt(0).toUpperCase()}
+      >{
+        user.profilePicture?
+        <img
+          src={user.profilePicture}
+
+          alt="user"
+          className="w-full border-[2px] border-solid border-pink-700 object-cover"
+        />:
+        user?.username.charAt(0).toUpperCase()
+      }
+       
       </motion.button>
 
       <AnimatePresence>
@@ -326,6 +338,7 @@ const UserMenu = ({ user, dropdown, toggleDropdown, navigate, handleLogout, drop
           </motion.div>
         )}
       </AnimatePresence>
+      
     </div>
   );
 };

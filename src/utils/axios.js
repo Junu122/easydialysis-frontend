@@ -38,7 +38,9 @@ useraxiosInstance.interceptors.request.use(function (config) {
     const originalRequest = error.config;
     console.log("error .response is : ",error)
     if (error.response?.status !== 401 || originalRequest._retry) {
-      return Promise.reject(error);
+      return Promise.reject({  status: error?.response?.status,
+        success: error?.response?.data?.success,
+        message: error?.response?.data?.message || "Authentication error"});
     }
 
     if (isRefreshing) {

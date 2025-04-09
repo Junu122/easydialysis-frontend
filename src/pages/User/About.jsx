@@ -82,7 +82,7 @@ const About = () => {
                                 alt="Team Member"
                                 className="w-24 h-24 mx-auto rounded-full mb-4"
                             />
-                            <h3 className="text-xl font-semibold">John Doe</h3>
+                            <h3 className="text-xl font-semibold">JUNAID SHAIKH</h3>
                             <p className="text-gray-600">Founder & CEO</p>
                         </div>
                         <div className="bg-white rounded-lg shadow-md p-6">
@@ -91,7 +91,7 @@ const About = () => {
                                 alt="Team Member"
                                 className="w-24 h-24 mx-auto rounded-full mb-4"
                             />
-                            <h3 className="text-xl font-semibold">Jane Smith</h3>
+                            <h3 className="text-xl font-semibold">JUNAID</h3>
                             <p className="text-gray-600">Chief Medical Officer</p>
                         </div>
                         <div className="bg-white rounded-lg shadow-md p-6">
@@ -100,7 +100,7 @@ const About = () => {
                                 alt="Team Member"
                                 className="w-24 h-24 mx-auto rounded-full mb-4"
                             />
-                            <h3 className="text-xl font-semibold">Rahul Sharma</h3>
+                            <h3 className="text-xl font-semibold">JUNAID</h3>
                             <p className="text-gray-600">CTO</p>
                         </div>
                     </div>

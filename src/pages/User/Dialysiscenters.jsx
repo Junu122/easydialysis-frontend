@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Centercard from "../../components/User/Centercard";
 import Footer from "../../components/User/Footer";
-import { adminService } from "../../services/adminService";
+
 import { Search, MapPin, Hospital, Heart, Activity } from "lucide-react";
 import { authService } from "../../services/authService";
 
@@ -19,7 +19,7 @@ const Dialysiscenters = () => {
     const progressInterval = setInterval(() => {
       setLoadingProgress(prev => {
         const newProgress = prev + Math.random() * 15;
-        return newProgress >= 100 ? 100 : newProgress;
+        return newProgress >= 90 ? 90 : newProgress;
       });
     }, 2000);
 
@@ -31,14 +31,17 @@ const Dialysiscenters = () => {
         setnewdialysis(response?.data?.dialysisCenters);
         setFilteredCenters(response?.data?.dialysisCenters);
         
-        // Ensure we show 100% before hiding loading screen
-        setLoadingProgress(100);
+        if(response?.data?.dialysisCenters){
+          setLoadingProgress(100);
+          setTimeout(() => {
+            setPageLoading(false);
+            setLoading( false);
+          }, 500);
+        }
+       
         
         // Add a small delay after data loads to show 100% completion
-        setTimeout(() => {
-          setPageLoading(false);
-          setLoading( false);
-        }, 500);
+      
         
         
       } catch (error) {
@@ -84,12 +87,12 @@ const Dialysiscenters = () => {
   };
 
   // Get unique cities for filter
-  const uniqueCities = [...new Set(newdialysis.map(center => center.CenterCity))].sort();
+  const uniqueCities = [...new Set(newdialysis?.map(center => center?.CenterCity))].sort();
 
   // Full-page loading screen
   if (pageLoading) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-pink-700 to-purple-900 flex flex-col items-center justify-center z-50">
+      <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
         <div className="relative mb-8">
           {/* Pulsing circles */}
           <div className="absolute inset-0 rounded-full bg-pink-500/30 animate-ping"></div>
@@ -112,31 +115,31 @@ const Dialysiscenters = () => {
             
             {/* Small orbiting icons */}
             <div className="absolute h-10 w-10 animate-orbit" style={{ animationDuration: '3s' }}>
-              <Hospital className="h-6 w-6 text-white absolute -top-3 -left-3" />
+              <Hospital className="h-6 w-6 text-pink-700 absolute -top-3 -left-3" />
             </div>
             <div className="absolute h-10 w-10 animate-orbit" style={{ animationDuration: '4s', animationDelay: '0.5s' }}>
-              <Activity className="h-6 w-6 text-white absolute -bottom-3 -right-3" />
+              <Activity className="h-6 w-6 text-pink-700 absolute -bottom-3 -right-3" />
             </div>
           </div>
         </div>
         
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-wide">Dialysis Centers</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-pink-700 mb-3 tracking-wide">Dialysis Centers</h1>
         <p className="text-white/80 mb-8 text-center max-w-sm">Loading your healthcare journey...</p>
         
         {/* Progress bar */}
-        <div className="w-64 md:w-80 h-2 bg-white/20 rounded-full overflow-hidden mb-2">
+        <div className="w-64 md:w-80 h-2 bg-pink-400 rounded-full overflow-hidden mb-2">
           <div 
-            className="h-full bg-white rounded-full transition-all duration-300 ease-out"
+            className="h-full bg-pink-800 rounded-full transition-all duration-300 ease-out"
             style={{ width: `${loadingProgress}%` }}  
           ></div>
         </div>
-        <p className="text-white/70 text-sm">{Math.round(loadingProgress)}%</p>
+        <p className="text-pink-700 text-sm">{Math.round(loadingProgress)}%</p>
         
         {/* Animated dots */}
         <div className="flex space-x-2 mt-8">
-          <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-          <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-          <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+          <div className="w-3 h-3 bg-pink-900 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+          <div className="w-3 h-3 bg-pink-900 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-3 h-3 bg-pink-900 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
         </div>
       </div>
     );

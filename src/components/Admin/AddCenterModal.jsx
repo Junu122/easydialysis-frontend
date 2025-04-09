@@ -224,6 +224,7 @@ const AddCenterModal = ({ setShowAddCenterModal,setDialysisCenters }) => {
       }
       console.log(uploadData,"upload data...........")
       const response=await adminService.addDialysisCenter(uploadData)
+      console.log(response)
       setDialysisCenters(response.data.alldialysiscenters)
       setformData({
         CenterName: "",

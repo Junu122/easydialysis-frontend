@@ -1,164 +1,303 @@
-import React, { useEffect,useState } from 'react';
-import { assets } from '../../assets/assets';
-import Ourservices from '../../components/User/Ourservices';
+import { useState,useEffect } from 'react';
+import { Calendar, Clock, MapPin, Phone, Heart, Star, ShieldCheck, ArrowRight } from 'lucide-react';
 import Footer from '../../components/User/Footer';
-import { Wrench,LoaderCircle } from 'lucide-react';
 
-const Services = () => {
+import { useNavigate } from 'react-router-dom';
+import LoadingAnimation from '../../components/User/LoadingAnimation';
+export default function Services() {
+  const navigate=useNavigate()
+  const [activeTab, setActiveTab] = useState('services');
+ const [loadingProgress, setLoadingProgress] = useState(0);
    const [pageLoading,setpageLoading]=useState(true);
-  const dialysisServices = [
+  const services = [
     {
-      id: 1,
-      heading: "Accessible Locations",
-      paragraph: "Our dialysis centers are located in easily accessible areas to ensure that quality care is always within reach. Designed with your convenience in mind, our facilities make it easy for you to focus on your health.",
-      image:  "https://via.placeholder.com/300x200?text=Reliable+Booking",
-      icon: "map-pin"
+      title: "In-Center Hemodialysis",
+      description: "Standard dialysis treatment performed at our state-of-the-art centers with medical professionals present.",
+      icon: <Heart className="text-pink-700" size={24} />,
+      duration: "3-4 hours",
+      frequency: "3 times per week"
     },
     {
-      id: 2,
-      heading: "Reliable Booking",
-      paragraph: "We offer a dependable and user-friendly booking system to schedule your dialysis sessions at your convenience. Our goal is to make your scheduling experience seamless and stress-free.",
-      image: "/api/placeholder/600/400",
-      icon: "calendar"
+      title: "Home Hemodialysis",
+      description: "Perform dialysis in the comfort of your own home with our support and equipment.",
+      icon: <MapPin className="text-pink-700" size={24} />,
+      duration: "2-3 hours",
+      frequency: "4-6 times per week"
     },
     {
-      id: 3,
-      heading: "Experienced Staff",
-      paragraph: "Our medical team is composed of highly experienced professionals dedicated to providing safe and personalized dialysis care. With a focus on empathy and precision, we ensure you receive the highest quality treatment.",
-      image:  "/api/placeholder/600/400",
-      icon: "users"
+      title: "Peritoneal Dialysis",
+      description: "A home-based treatment that uses the lining of your abdomen to filter blood inside your body.",
+      icon: <ShieldCheck className="text-pink-700" size={24} />,
+      duration: "All day or night",
+      frequency: "Daily"
     },
     {
-      id: 4,
-      heading: "Modern Equipment",
-      paragraph: "Our dialysis centers are equipped with modern technology to ensure effective and efficient treatments. We prioritize your comfort and safety during every session.",
-      image: "/api/placeholder/600/400",
-      icon: "cpu"
-    },
-    {
-      id: 5,
-      heading: "Comprehensive Support",
-      paragraph: "We provide holistic support services, including dietary guidance and counseling, to help you manage your health effectively. Our team is here to assist you at every step of your dialysis journey.",
-      image:  "/api/placeholder/600/400",
-      icon: "heart"
-    },
+      title: "Urgent Dialysis Care",
+      description: "Emergency dialysis services for patients requiring immediate treatment.",
+      icon: <Phone className="text-pink-700" size={24} />,
+      duration: "As needed",
+      frequency: "As required"
+    }
   ];
 
+ 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    const progressInterval = setInterval(() => {
+      setLoadingProgress(prev => {
+        const newProgress = prev + Math.random() * 15;
+        return newProgress >= 100 ? 100 : newProgress;
+      });
+    }, 2000);
+    setLoadingProgress(100);
     const pageLoadTimer = setTimeout(() => {
       setpageLoading(false);
+      
     }, 1000); 
-    window.scrollTo(0, 0);
-  }, []);
+  },[])
 
-    if (pageLoading) {
-      return (
-        <div className="fixed bg-transparent inset-0 bg-gradient-to-r  from-purple-900 to-pink-600 flex flex-col items-center justify-center ">
-          <div className="h-24 w-24 mb-8 animate-spin">
-            <LoaderCircle className="h-full w-full text-white" /> 
-          </div>
-          <h1 className="text-3xl font-bold text-white mb-4">Loading Services</h1>
-          <div className="w-64 h-2 bg-white/20 rounded-full overflow-hidden">
-            <div className="h-full bg-white animate-pulse rounded-full"></div>
-          </div>
-        </div>
-      );
-    }
-
+   if (pageLoading) {
+        return (
+         <LoadingAnimation loadingProgress={loadingProgress} />
+        );
+      }
   return (
-    <div className="font-sans">
-    {/* Hero Section - REDUCED HEIGHT */}
-    <section className="relative h-64 overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-cover bg-center" 
-        style={{ 
-          backgroundImage: `url(${ "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE="})`
-        }}
-      ></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-pink-600/80"></div>
-      <div className="relative h-full flex flex-col justify-center items-center text-white px-4 text-center z-10">
-      <Wrench />
-        <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-tight">Our Services</h1>
-        <p className="text-lg md:text-xl max-w-2xl mx-auto font-light">
-          Comprehensive services designed with care, expertise, and your well-being in mind.
-        </p>
-      </div>
-    </section>
-
-    {/* Services Card Section */}
-    <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">What We Offer</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Our state-of-the-art facilities and compassionate team are dedicated to providing 
-            exceptional care tailored to your individual needs.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {dialysisServices.map((dialysisService) => (
-            <Ourservices key={dialysisService.id} service={dialysisService} />
-          ))}
-        </div>
-      </div>
-    </section>
-
-    {/* Testimonials Section */}
-    <section className="py-16 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Patient Testimonials</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Hear what our patients have to say about their experience with our services.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-            <div className="flex items-center mb-4">
-              <div className="w-16 h-16 rounded-full bg-gray-300 mr-4"></div>
-              <div>
-                <h4 className="font-bold text-lg">Sarah Johnson</h4>
-                <p className="text-gray-500">Patient since 2022</p>
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white">
+      {/* Hero Section */}
+      <header className="bg-pink-800 text-white">
+        <div className="container mx-auto px-6 py-16">
+          <div className="flex flex-col md:flex-row items-center">
+            <div className="md:w-1/2 mb-10 md:mb-0">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Compassionate Dialysis Care When You Need It</h1>
+              <p className="text-lg mb-8">Book your dialysis treatment with ease and receive top-quality care from our experienced professionals.</p>
+              <button onClick={()=>navigate('/dialysis')} className="bg-white text-pink-800 px-6 py-3 rounded-lg font-bold hover:bg-pink-100 transition duration-300 flex items-center">
+                Book Appointment <ArrowRight className="ml-2" size={20} />
+              </button>
+            </div>
+            <div className="md:w-1/2 flex justify-center">
+              <div className="bg-pink-800 bg-opacity-50 p-6 rounded-xl shadow-2xl">
+                <img 
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY1rBKU_OJuv-d0d9s8z9rYZl0VHhvvAndKQ&s" 
+                  alt="Dialysis Care" 
+                  className="rounded-lg"
+                />
               </div>
             </div>
-            <p className="text-gray-700 italic">"The staff has been incredible. They're not only professional but also genuinely caring. The modern facilities and flexible scheduling have made my treatment journey much easier."</p>
           </div>
-          
-          <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-            <div className="flex items-center mb-4">
-              <div className="w-16 h-16 rounded-full bg-gray-300 mr-4"></div>
-              <div>
-                <h4 className="font-bold text-lg">Michael Torres</h4>
-                <p className="text-gray-500">Patient since 2021</p>
+        </div>
+      </header>
+
+      {/* Navigation */}
+      <nav className="bg-white shadow-md">
+        <div className="container mx-auto px-6">
+          <div className="sm:flex-col md:flex-row space-x-1">
+            <button 
+              onClick={() => setActiveTab('services')}
+              className={`px-4 py-3 font-medium transition ${activeTab === 'services' ? 'text-pink-700 border-b-2 border-pink-700 text-[20px]' : 'text-gray-600 hover:text-pink-700'}`}
+            >
+              Our Services
+            </button>
+            <button 
+              onClick={() => setActiveTab('insurance')}
+              className={`px-4 py-3 font-medium transition ${activeTab === 'insurance' ? 'text-pink-700 border-b-2 border-pink-700 text-[20px]' : 'text-gray-600 hover:text-pink-700'}`}
+            >
+              Insurance
+            </button>
+            <button 
+              onClick={() => setActiveTab('resources')}
+              className={`px-4 py-3 font-medium transition ${activeTab === 'resources' ? 'text-pink-700 border-b-2 border-pink-700 text-[20px]' : 'text-gray-600 hover:text-pink-700'}`}
+            >
+              Resources
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Content Section */}
+      <section className="py-12">
+        <div className="container mx-auto px-6">
+          {activeTab === 'services' && (
+            <div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-10 text-center">Our Dialysis Services</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {services.map((service, index) => (
+                  <div key={index} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-pink-100">
+                    <div className="bg-pink-50 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                      {service.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{service.title}</h3>
+                    <p className="text-gray-600 mb-4">{service.description}</p>
+                    <div className="border-t border-pink-100 pt-4 mt-2">
+                      <div className="flex items-center mb-2">
+                        <Clock size={16} className="text-pink-700 mr-2" />
+                        <span className="text-sm text-gray-600">Duration: {service.duration}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Calendar size={16} className="text-pink-700 mr-2" />
+                        <span className="text-sm text-gray-600">Frequency: {service.frequency}</span>
+                      </div>
+                    </div>
+                    <button className="w-full mt-6 bg-pink-700 text-white py-2 rounded-lg font-medium hover:bg-pink-800 transition duration-300">
+                      Book Now
+                    </button>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mt-16 bg-pink-50 rounded-xl p-8 border border-pink-200">
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Why Choose Our Dialysis Services?</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="flex items-start">
+                    <div className="bg-pink-100 p-2 rounded-full mr-4">
+                      <Star className="text-pink-700" size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-800 mb-1">Experienced Team</h4>
+                      <p className="text-gray-600">Our staff includes board-certified nephrologists and specially trained dialysis nurses.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="bg-pink-100 p-2 rounded-full mr-4">
+                      <Star className="text-pink-700" size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-800 mb-1">State-of-the-Art Facilities</h4>
+                      <p className="text-gray-600">Modern equipment and comfortable treatment areas for the best care experience.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="bg-pink-100 p-2 rounded-full mr-4">
+                      <Star className="text-pink-700" size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-800 mb-1">Personalized Care</h4>
+                      <p className="text-gray-600">Customized treatment plans developed specifically for your health needs.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <p className="text-gray-700 italic">"Finding a center with such accessible locations and reliable booking has been a game-changer for me. The comprehensive support I receive here goes beyond just treatment - it's truly holistic care."</p>
+          )}
+
+      
+
+          {activeTab === 'insurance' && (
+            <div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-10 text-center">Insurance Information</h2>
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <p className="text-lg text-gray-700 mb-6">
+                  We work with most major insurance providers to ensure you receive the care you need. Our team will help verify your coverage and assist with any paperwork needed.
+                </p>
+                
+                <h3 className="text-xl font-bold text-gray-800 mb-4">Accepted Insurance Plans</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                  <div className="bg-pink-50 p-4 rounded-lg">Medicare</div>
+                  <div className="bg-pink-50 p-4 rounded-lg">Medicaid</div>
+                  <div className="bg-pink-50 p-4 rounded-lg">Blue Cross Blue Shield</div>
+                  <div className="bg-pink-50 p-4 rounded-lg">Aetna</div>
+                  <div className="bg-pink-50 p-4 rounded-lg">Cigna</div>
+                  <div className="bg-pink-50 p-4 rounded-lg">UnitedHealthcare</div>
+                </div>
+                
+                <div className="bg-pink-100 p-6 rounded-lg border border-pink-200">
+                  <h4 className="font-bold text-gray-800 mb-2">Need help with insurance verification?</h4>
+                  <p className="text-gray-700 mb-4">
+                    Our patient coordinators can help you understand your coverage and estimate any out-of-pocket costs.
+                  </p>
+                  <button className="bg-pink-700 text-white px-6 py-2 rounded-lg font-medium hover:bg-pink-800 transition duration-300">
+                    Contact Insurance Support
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'resources' && (
+            <div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-10 text-center">Patient Resources</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">Patient Education</h3>
+                  <p className="text-gray-600 mb-6">
+                    Access resources to help you understand kidney disease, treatment options, and how to manage your health.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center p-3 bg-pink-50 rounded-lg">
+                      <ArrowRight className="text-pink-700 mr-2" size={16} />
+                      <span>Understanding Dialysis Treatment</span>
+                    </div>
+                    <div className="flex items-center p-3 bg-pink-50 rounded-lg">
+                      <ArrowRight className="text-pink-700 mr-2" size={16} />
+                      <span>Kidney-Friendly Diet Guide</span>
+                    </div>
+                    <div className="flex items-center p-3 bg-pink-50 rounded-lg">
+                      <ArrowRight className="text-pink-700 mr-2" size={16} />
+                      <span>Managing Medications</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">Support Services</h3>
+                  <p className="text-gray-600 mb-6">
+                    We offer various support services to help you manage your kidney disease journey.
+                  </p>
+                  <div className="space-y-4">
+                    <div className="flex items-start">
+                      <div className="bg-pink-100 p-2 rounded-full mr-3">
+                        <Heart className="text-pink-700" size={16} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-800">Nutrition Counseling</h4>
+                        <p className="text-gray-600 text-sm">Work with our renal dietitians to create a kidney-friendly meal plan.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="bg-pink-100 p-2 rounded-full mr-3">
+                        <Heart className="text-pink-700" size={16} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-800">Social Services</h4>
+                        <p className="text-gray-600 text-sm">Get help with the emotional and social aspects of managing kidney disease.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="bg-pink-100 p-2 rounded-full mr-3">
+                        <Heart className="text-pink-700" size={16} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-800">Transportation Assistance</h4>
+                        <p className="text-gray-600 text-sm">Access transportation services to and from your dialysis appointments.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-pink-700 text-white py-12">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Schedule Your Dialysis Treatment?</h2>
+          <p className="text-lg mb-8 max-w-2xl mx-auto">
+            Our team is ready to provide you with expert care and support throughout your treatment journey.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button onClick={()=>navigate('/dialysis')} className="bg-white text-pink-700 px-6 py-3 rounded-lg font-bold hover:bg-pink-100 transition duration-300">
+              Book Appointment
+            </button>
+            <button className="bg-pink-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-pink-900 transition duration-300">
+              Contact Us
+            </button>
           </div>
         </div>
-      </div>
-    </section>
-    
-    {/* CTA Section - CHANGED TO PINK-600 WITH WHITE TEXT */}
-    <section className="py-16 bg-pink-800 text-white">
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Experience Our Quality Care?</h2>
-        <p className="text-xl mb-8">Schedule your appointment today and let our experienced team take care of you.</p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button className="bg-white text-pink-600 hover:bg-pink-50 transition-colors px-8 py-3 rounded-full font-medium text-lg">
-            Book an Appointment
-          </button>
-          <button className="bg-transparent border-2 border-white hover:bg-white/10 transition-colors px-8 py-3 rounded-full font-medium text-lg">
-            Contact Us
-          </button>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <Footer />
-  </div>
-);
-};
-
-export default Services;
+      {/* Footer */}
+     <Footer />
+    </div>
+  );
+}

@@ -8,10 +8,21 @@ export const checkAuth = createAsyncThunk('auth/checkAuth', async () => {
   return response.data;
 });
 
+export const googleAuth=createAsyncThunk('/auth/google-auth', async (data,{rejectWithValue})=>{
+  console.log("entered googleauth")
+  console.log(data)
+  const response=await authService.googleAuth(data)
+  if(!response?.data?.success){
+    return rejectWithValue(response.data);
+  }
+  console.log("response in auth slice of google auth :" ,response)
+  return response?.data;
+});
+
 export const userLogin = createAsyncThunk('auth/userLogin', async (userData,{rejectWithValue}) => {
   const response = await authService.userLogin(userData);
-  if(!response.data.success){
-    return rejectWithValue(response.data);
+  if(!response?.data?.success){
+    return rejectWithValue(response);
   }
   console.log(response,"response in slice")
   return response?.data;
@@ -61,6 +72,18 @@ const authSlice = createSlice({
         state.accessToken = action.payload.accessToken;
       })
       .addCase(userLogin.rejected,(state,action)=>{
+        state.isAuthenticated=false;
+        state.user=null;
+        state.accessToken=null;
+        state.error=action.payload;
+        
+      })
+      .addCase(googleAuth.fulfilled,(state,action)=>{
+        state.isAuthenticated=true;
+        state.user=action.payload.user;
+        state.accessToken = action.payload.accessToken;
+      })
+      .addCase(googleAuth.rejected,(state,action)=>{
         state.isAuthenticated=false;
         state.user=null;
         state.accessToken=null;

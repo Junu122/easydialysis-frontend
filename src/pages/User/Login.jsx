@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { userLogin } from "../../features/auth/authSlice";
-
+import { userLogin,googleAuth } from "../../features/auth/authSlice";
+import { GoogleLogin } from '@react-oauth/google'
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Login = () => {
       setErrorMessage(prev => ({ ...prev, [name]: "" }));
     }
   };
-
+ console.log(errorMessage)
   // Validate data on frontend
   const validateData = (values) => {
     const errors = {};
@@ -39,28 +39,25 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateData(data);
-
+    
     if (Object.keys(errors).length > 0) {
       setErrorMessage(errors);
       return;
     }
-
+  
     try {
       const response = await dispatch(userLogin(data));
-      
-      if (response?.error?.message === 'Network Error') {
-        setErrorMessage({ networkError: "Unable to connect to server. Please try again." });
-        return;
-      }
-      
-      if (response?.payload?.passerror || response?.payload?.usererror) {
+      console.log(response,"response in login")
+      if (response?.payload?.data?.passerror || response?.payload?.data?.usererror || response?.payload?.data?.googleUser ) {
         setErrorMessage({
-          email: response.payload.usererror || "",
-          password: response.payload.passerror || "",
+          email: response?.payload?.data?.usererror || "",
+          password: response?.payload?.data?.passerror || "",
+          networkError:response?.payload?.data?.message || ""
+          
         });
         return;
       }
-      
+     gbm
       if (response?.payload?.success) {
         navigate("/");
       }
@@ -68,6 +65,30 @@ const Login = () => {
       setErrorMessage({ networkError: "An unexpected error occurred. Please try again." });
     }
   };
+
+   const handleGoogleLoginSuccess = async (credentialResponse) => {
+      try {
+  
+        const response = await dispatch(googleAuth(credentialResponse.credential))
+        console.log(response,"response in google auth")
+        if(response?.payload?.success===false){
+          return setErrorMessage({general:response?.payload?.message})
+        }
+        if (response?.payload?.success) {
+          navigate("/");
+        } else {
+          setErrorMessage({ general: response?.data?.message });
+        }
+      } catch (error) {
+        console.error("Google authentication error:", error);
+        setErrorMessage({ general: "Failed to authenticate with Google. Please try again." });
+      }
+    };
+  
+    // Handle Google login error
+    const handleGoogleLoginError = () => {
+      setErrorMessage({ general: "Google sign-in was unsuccessful. Please try again." });
+    };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-purple-100 p-4">
@@ -78,6 +99,8 @@ const Login = () => {
           <p className="text-center text-blue-100 mt-2">
             Log in to book your dialysis appointment
           </p>
+       
+         
         </div>
 
         {/* Form Section */}
@@ -182,7 +205,19 @@ const Login = () => {
           </div>
 
           {/* Optional: Social Login */}
-       
+          <div className="mb-6 mt-4">
+                    <GoogleLogin
+                      onSuccess={handleGoogleLoginSuccess}
+                      onError={handleGoogleLoginError}
+                      size="large"
+                      width="400px"
+                      logo_alignment="center"
+                      text="signup_with"
+                    />
+                       {errorMessage.general && (
+          <p className="text-center text-red-500 mb-4">{errorMessage.general}</p>
+        )}
+                  </div>
         </div>
       </div>
     </div>
