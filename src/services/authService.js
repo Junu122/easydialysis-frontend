@@ -33,7 +33,7 @@ export const authService = {
   async userLogin(userData) {
     console.log(userData,"user entered data in userLogin auth service.js")
     try {
-      const response = await useraxiosInstance.post('/login', userData);
+      const response = await useraxiosInstance.post('/login', userData,{withCredentials:true});
       console.log(response,"response in userLogin  authservice.js")
       return response;
     } catch (error) {

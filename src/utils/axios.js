@@ -17,7 +17,7 @@ const processQueue = (error, token = null) => {
 
 const useraxiosInstance = axios.create({
   baseURL: 'https://easydialysis-backend.vercel.app/api/auth',
-  timeout: 15000,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
