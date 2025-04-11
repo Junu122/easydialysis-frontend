@@ -31,12 +31,13 @@ export const authService = {
   },
 
   async userLogin(userData) {
-    
+    console.log(userData,"user entered data in userLogin auth service.js")
     try {
-      const response = await useraxiosInstance.post('/login', userData, { withCredentials: true });
+      const response = await useraxiosInstance.post('/login', userData);
+      console.log(response,"response in userLogin  authservice.js")
       return response;
     } catch (error) {
-     
+     console.log(error,"error in login in authservice")
      return error
     }
   },
@@ -120,7 +121,7 @@ export const authService = {
   },
   async googleAuth(credential){
     try {
-      const response=await useraxiosInstance.post('/google-auth',{credential})
+      const response=await useraxiosInstance.post('/google-auth',{credential},{withCredentials:true})
       return response
     } catch (error) {
       console.log(error)

@@ -21,7 +21,9 @@ export const googleAuth=createAsyncThunk('/auth/google-auth', async (data,{rejec
 
 export const userLogin = createAsyncThunk('auth/userLogin', async (userData,{rejectWithValue}) => {
   const response = await authService.userLogin(userData);
+  console.log(response,"response in auth slice for userlogin")
   if(!response?.data?.success){
+  
     return rejectWithValue(response);
   }
   console.log(response,"response in slice")

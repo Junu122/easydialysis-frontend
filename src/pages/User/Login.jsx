@@ -10,6 +10,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  console.log(data)
   const [errorMessage, setErrorMessage] = useState({});
 
   const handleChange = (e) => {
@@ -38,6 +39,10 @@ const Login = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("entered hadnle submit in login.jsx")
+    console.log(data)
+    
+  
     const errors = validateData(data);
     
     if (Object.keys(errors).length > 0) {
@@ -47,7 +52,8 @@ const Login = () => {
   
     try {
       const response = await dispatch(userLogin(data));
-      console.log(response,"response in login")
+      
+      console.log(response,"response in login.jsx")
       if (response?.payload?.data?.passerror || response?.payload?.data?.usererror || response?.payload?.data?.googleUser ) {
         setErrorMessage({
           email: response?.payload?.data?.usererror || "",
@@ -57,11 +63,12 @@ const Login = () => {
         });
         return;
       }
-     gbm
+    
       if (response?.payload?.success) {
         navigate("/");
       }
     } catch (error) {
+      console.log(error,"error in login")
       setErrorMessage({ networkError: "An unexpected error occurred. Please try again." });
     }
   };
