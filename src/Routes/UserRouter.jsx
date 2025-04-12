@@ -91,9 +91,9 @@ const UserRouter = () => {
         <Route
           path="/success"
           element={
-            <PrivateRoute>
+          //  <PrivateRoute>
               <TransactionSuccess />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />{" "}
       </Routes>
